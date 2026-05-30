@@ -10,13 +10,20 @@ import (
 
 // DLQEnvelope is the JSON payload written to a dead-letter topic.
 type DLQEnvelope struct {
-	OriginalTopic     string `json:"original_topic"`
-	OriginalPartition int32  `json:"original_partition"`
-	OriginalOffset    int64  `json:"original_offset"`
-	OriginalKey       []byte `json:"original_key,omitempty"`
-	OriginalValue     []byte `json:"original_value,omitempty"`
-	Error             string `json:"error"`
-	FailedAt          int64  `json:"failed_at_unix"`
+	// OriginalTopic is the source topic of the failed message.
+	OriginalTopic string `json:"original_topic"`
+	// OriginalPartition is the source partition.
+	OriginalPartition int32 `json:"original_partition"`
+	// OriginalOffset is the source offset.
+	OriginalOffset int64 `json:"original_offset"`
+	// OriginalKey is the source message key.
+	OriginalKey []byte `json:"original_key,omitempty"`
+	// OriginalValue is the source message value.
+	OriginalValue []byte `json:"original_value,omitempty"`
+	// Error is the handler error string.
+	Error string `json:"error"`
+	// FailedAt is the Unix timestamp when the handler failed.
+	FailedAt int64 `json:"failed_at_unix"`
 }
 
 func buildDLQMessage(dlqTopic string, msg *sarama.ConsumerMessage, handlerErr error) (*sarama.ProducerMessage, error) {

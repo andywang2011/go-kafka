@@ -1,6 +1,6 @@
 module github.com/andywang2011/go-kafka
 
-go 1.25
+go 1.27.3
 
 require github.com/IBM/sarama v1.46.3
 

@@ -90,7 +90,8 @@ func TestSleepCtx(t *testing.T) {
 	if err := sleepCtx(ctx, time.Hour); !errors.Is(err, context.Canceled) {
 		t.Fatal(err)
 	}
-	if ctxOrBackground(nil) == nil { //nolint:staticcheck
+	//lint:ignore SA1012 intentional nil context in test
+	if ctxOrBackground(nil) == nil {
 		t.Fatal("nil ctx must become Background")
 	}
 }
@@ -182,7 +183,8 @@ func TestNewSyncProducer_wrapperAndClose(t *testing.T) {
 	if _, _, err := nilP.SendMessage(context.Background(), &sarama.ProducerMessage{}); !errors.Is(err, ErrProducerClosed) {
 		t.Fatal(err)
 	}
-	if _, _, err := (&syncProducer{}).SendMessage(nil, &sarama.ProducerMessage{}); !errors.Is(err, ErrProducerClosed) { //nolint:staticcheck
+	//lint:ignore SA1012 intentional nil context in test
+	if _, _, err := (&syncProducer{}).SendMessage(nil, &sarama.ProducerMessage{}); !errors.Is(err, ErrProducerClosed) {
 		t.Fatal(err)
 	}
 }
@@ -191,7 +193,8 @@ func TestNewSyncProducer_errorsAndCancel(t *testing.T) {
 	old := newSaramaSyncProducer
 	defer func() { newSaramaSyncProducer = old }()
 	newSaramaSyncProducer = func([]string, *sarama.Config) (sarama.SyncProducer, error) { return nil, errors.New("dial") }
-	if _, err := NewSyncProducer(nil, Config{Brokers: []string{"b:9092"}}, ProducerConfigDefault()); err == nil { //nolint:staticcheck
+	//lint:ignore SA1012 intentional nil context in test
+	if _, err := NewSyncProducer(nil, Config{Brokers: []string{"b:9092"}}, ProducerConfigDefault()); err == nil {
 		t.Fatal("expected error")
 	}
 	ctx, cancel := context.WithCancel(context.Background())
@@ -421,7 +424,8 @@ func TestNewConsumerWithDLQ_ctxCancelStopsBootstrapRetry(t *testing.T) {
 		t.Fatal("must not dial with cancelled ctx")
 	}
 	// nil ctx tolerated.
-	if _, err := NewConsumer(nil, Config{Brokers: []string{"b:9092"}}, //nolint:staticcheck
+	//lint:ignore SA1012 intentional nil context in test
+	if _, err := NewConsumer(nil, Config{Brokers: []string{"b:9092"}},
 		ConsumerConfig{GroupID: "g", Topics: []string{"t"}}, fakeHandler{}); err == nil {
 		t.Fatal("expected bootstrap error")
 	}

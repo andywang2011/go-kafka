@@ -36,6 +36,9 @@ type Config struct {
 	TLSCA string
 }
 
+// ConfigDefault returns connection defaults; Brokers must still be set before use.
+func ConfigDefault() Config { return Config{KafkaVersion: ""} }
+
 // ValidateBrokers ensures brokers is non-empty.
 func (c Config) ValidateBrokers() error {
 	if len(c.Brokers) == 0 {

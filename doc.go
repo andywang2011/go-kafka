@@ -3,6 +3,7 @@
 // Design constraints (for use in application frameworks):
 //   - No viper, no global singletons, no log.Fatal inside the library.
 //   - Constructors return interfaces (Producer, GroupConsumer) for mocking.
+//   - ConfigDefault() for connection Config; ProducerConfigDefault() for producer tuning.
 //   - Consumers use NewConsumer + Start(ctx) + Close(); start them from main or a dedicated cmd process.
 //
 // Producers:
